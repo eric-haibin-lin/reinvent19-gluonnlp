@@ -15,6 +15,12 @@ RUN mkdir -p /opt/ml/code
 
 COPY tutorial/ /opt/ml/code/
 
-ENV SAGEMAKER_PROGRAM train.py
+RUN ls /opt/ml/code/
 
-CMD ["/bin/bash"]
+WORKDIR /opt/ml/code
+
+RUN chmod +x -R /opt/ml/code/
+
+ENV SAGEMAKER_PROGRAM train
+
+ENV PATH="/opt/ml/code:${PATH}"
