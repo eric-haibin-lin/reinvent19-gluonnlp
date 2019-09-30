@@ -12,15 +12,15 @@
 # In[4]:
 
 
-get_ipython().system('pip install d2l -q')
-get_ipython().system('pip install gluonnlp -q')
+#get_ipython().system('pip install d2l -q')
+#get_ipython().system('pip install gluonnlp -q')
 
 
 # In[5]:
 
 
-get_ipython().system('pip uninstall mxnet-cu100mkl -y')
-get_ipython().system('pip install mxnet-cu100mkl -q')
+#get_ipython().system('pip uninstall mxnet-cu100mkl -y')
+#get_ipython().system('pip install mxnet-cu100mkl -q')
 
 
 # In[16]:
