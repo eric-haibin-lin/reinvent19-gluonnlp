@@ -63,6 +63,8 @@ bert_base, vocabulary = nlp.model.get_model('bert_12_768_12',
                                             pretrained=True, ctx=ctx,
                                             use_decoder=False, use_classifier=False)
 print(bert_base)
+mx.nd.waitall()
+print('Pre-trained BERT parameters are initialized')
 
 
 # ### Model and Loss for Fine-tuning
