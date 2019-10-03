@@ -11,9 +11,7 @@ RUN cp $(which pip3) /usr/local/bin/pip
 
 RUN pip install --upgrade pip
 
-RUN pip install sagemaker-containers --user
-
-RUN pip install mxnet-cu100 d2l gluonnlp ipython --user
+RUN pip install sagemaker-containers mxnet-cu100 d2l gluonnlp ipython --user
 
 RUN apt install --assume-yes vim
 
