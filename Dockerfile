@@ -11,7 +11,7 @@ RUN cp $(which pip3) /usr/local/bin/pip
 
 RUN pip install --upgrade pip
 
-RUN pip install sagemaker-containers mxnet-cu100 d2l gluonnlp ipython --user
+RUN pip install sagemaker-containers mxnet-cu100 d2l https://github.com/dmlc/gluon-nlp/tarball/master ipython --user
 
 RUN apt install --assume-yes vim
 
@@ -25,6 +25,6 @@ WORKDIR /opt/ml/code
 
 RUN chmod +x -R /opt/ml/code/
 
-ENV SAGEMAKER_PROGRAM train
+ENV SAGEMAKER_PROGRAM train.py
 
 ENV PATH="/opt/ml/code:${PATH}"
