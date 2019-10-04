@@ -55,8 +55,8 @@ def train_loop(net, train_data, test_data, num_epoch, lr, ctx, loss_fn):
     
             accuracy.update(labels, preds)
             if i % 25 == 0:
-                print("Batch", i, "Acc", accuracy.get()[1],"Train Loss", running_loss/(i+1))
-        print("Epoch {}, Acc {}, Train Loss {}".format(epoch, accuracy.get(), running_loss/(i+1)))
+                print("Batch {}, Train Acc {}, Train Loss {}".format(i, accuracy.get()[1], running_loss/(i+1)))
+        print("Epoch {}, Train Acc {}, Train Loss {}".format(epoch, accuracy.get(), running_loss/(i+1)))
         evaluate(test_data, ctx, net)
 
 def evaluate(test_data, ctx, net):
@@ -70,7 +70,7 @@ def evaluate(test_data, ctx, net):
             out = net(inp, token_type, seq_len)
             accuracy += (out.argmax(axis=1).squeeze() == label).mean().copyto(mx.cpu()) / len(ctx)
         accuracy.wait_to_read()
-    print("Test Acc {}".format(accuracy.asscalar()/(i+1)))
+    print("Test Acc {},".format(accuracy.asscalar()/(i+1)))
 
 def predict_sentiment(net, ctx, vocabulary, bert_tokenizer, sentence):
     ctx = ctx[0] if isinstance(ctx, list) else ctx
