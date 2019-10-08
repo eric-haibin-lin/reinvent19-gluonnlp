@@ -1,17 +1,11 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[24]:
-
-
 import json
 import gluonnlp as nlp
 import mxnet as mx
 from utils import predict_sentiment
-
-
-# In[29]:
-
+import logging, imp
+imp.reload(logging)
+import logging
+import warnings
 
 def model_fn(model_dir):
     """
@@ -38,8 +32,6 @@ def transform_fn(model, data, input_content_type, output_content_type):
     :param output_content_type: The (desired) response content type.
     :return: response payload and content type.
     """
-    # we can use content types to vary input/output handling, but
-    # here we just assume json for both                                                                                                      96,5          Bot
     net, vocabulary = model
     sentence = json.loads(data)
     tokenizer = nlp.data.BERTTokenizer(vocabulary)
@@ -47,18 +39,10 @@ def transform_fn(model, data, input_content_type, output_content_type):
     response_body = json.dumps(result)
     return response_body, output_content_type
 
-
-# In[38]:
-
-
-'''
-# example usage:
-
-model = model_fn('.')
-data = json.dumps('this movie is great')
-input_content_type = 'application/json'
-output_content_type = 'application/json'
-result, _ = transform_fn(model, data, input_content_type, output_content_type)
-print(result)
-'''
-
+def test():
+    model = model_fn('.')
+    data = json.dumps('this movie is great')
+    input_content_type = 'application/json'
+    output_content_type = 'application/json'
+    result, _ = transform_fn(model, data, input_content_type, output_content_type)
+    print(result)

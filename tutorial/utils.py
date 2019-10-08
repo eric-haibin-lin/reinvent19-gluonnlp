@@ -56,7 +56,7 @@ def train_loop(net, train_data, test_data, num_epoch, lr, ctx, loss_fn):
             accuracy.update(labels, preds)
             if i % 25 == 0:
                 print("Batch {}, Train Acc {}, Train Loss {}".format(i, accuracy.get()[1], running_loss/(i+1)))
-        print("Epoch {}, Train Acc {}, Train Loss {}".format(epoch, accuracy.get(), running_loss/(i+1)))
+        print("Epoch {}, Train Acc {}, Train Loss {}".format(epoch, accuracy.get()[1], running_loss/(i+1)))
         evaluate(test_data, ctx, net)
 
 def evaluate(test_data, ctx, net):
