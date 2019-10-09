@@ -7,7 +7,7 @@ from mxnet import gluon, nd
 from mxnet.gluon import nn
 import gluonnlp as nlp
 
-def train_loop(net, train_data, test_data, num_epoch, lr, ctx, loss_fn):
+def fit(net, train_data, test_data, num_epoch, lr, ctx, loss_fn):
     trainer = gluon.Trainer(net.collect_params(), 'bertadam',
                             {'learning_rate': lr, 'wd':0.01},
                             update_on_kvstore=False)
@@ -94,3 +94,19 @@ def predict_sentiment(net, ctx, vocabulary, bert_tokenizer, sentence):
         out = net(inputs, token_types, seq_len)
         label = nd.argmax(out, axis=1)
         return 'positive' if label.asscalar() == 1 else 'negative'
+
+def get_dataloader(batch_size, vocabulary, train_dataset, test_dataset):
+    padding_id = vocabulary[vocabulary.padding_token]
+    batchify_fn = nlp.data.batchify.Tuple(
+            nlp.data.batchify.Pad(axis=0, pad_val=padding_id), # words
+            nlp.data.batchify.Stack(), # valid length
+            nlp.data.batchify.Pad(axis=0, pad_val=0), # segment type
+            nlp.data.batchify.Stack(np.float32)) # label
+
+    train_data = mx.gluon.data.DataLoader(train_dataset,
+                                   batchify_fn=batchify_fn, shuffle=True,
+                                   batch_size=batch_size, num_workers=4)
+    test_data = mx.gluon.data.DataLoader(test_dataset,
+                                  batchify_fn=batchify_fn,
+                                  shuffle=False, batch_size=batch_size, num_workers=4)
+    return train_data, test_data
