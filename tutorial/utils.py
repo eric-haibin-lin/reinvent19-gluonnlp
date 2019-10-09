@@ -1,10 +1,6 @@
-import random
-import math
-
 import numpy as np
 import mxnet as mx
-from mxnet import gluon, nd
-from mxnet.gluon import nn
+from mxnet import gluon
 import gluonnlp as nlp
 
 def fit(net, train_data, test_data, num_epoch, lr, ctx, loss_fn):
@@ -59,6 +55,11 @@ def fit(net, train_data, test_data, num_epoch, lr, ctx, loss_fn):
         print("Epoch {}, Train Acc {}, Train Loss {}".format(epoch, accuracy.get()[1], running_loss/(i+1)))
         evaluate(test_data, ctx, net)
 
+def try_all_gpus():
+    from mxnet import context
+    ctxes = [context.gpu(i) for i in range(context.num_gpus())]
+    return ctxes if ctxes else [context.cpu()]
+
 def evaluate(test_data, ctx, net):
     accuracy = 0
     for i, (inputs, seq_lens, token_types, labels) in enumerate(test_data):
@@ -92,7 +93,7 @@ def predict_sentiment(net, ctx, vocabulary, bert_tokenizer, sentence):
         token_types = mx.nd.array(token_types).as_in_context(ctx)
         seq_len = mx.nd.array(seq_len, dtype='float32').as_in_context(ctx)
         out = net(inputs, token_types, seq_len)
-        label = nd.argmax(out, axis=1)
+        label = mx.nd.argmax(out, axis=1)
         return 'positive' if label.asscalar() == 1 else 'negative'
 
 def get_dataloader(batch_size, vocabulary, train_dataset, test_dataset):
