@@ -1,4 +1,4 @@
-## Chalk Talk: Build State-of-the-art NLP Models with Amazon SageMaker and GluonNLP
+## Chalk Talk: Build State-of-the-art NLP Models with [Amazon SageMaker](https://aws.amazon.com/sagemaker/) and [GluonNLP](https://gluon-nlp.mxnet.io)
 
 Presenter: Haibin Lin, Rachel Hu
 
